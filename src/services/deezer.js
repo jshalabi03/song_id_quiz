@@ -9,6 +9,7 @@ export async function searchArtists(query) {
     const response = await axios.get(ARTIST_URL, {
       params: {
         q: query,
+        limit: 15,
       },
     });
     const responseData = response.data;

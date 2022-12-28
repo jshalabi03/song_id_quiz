@@ -42,13 +42,11 @@ const App = () => {
     <div className="App">
       <header className="App-header">
         <h1>Identify The Song!</h1>
-        <a href={AUTH_URL}>Login with Deezer</a>
         <SearchBar
           searchQuery={searchQuery}
           handleChange={handleSearchQueryChange}
           handleSubmit={handleSearchSubmit}
         />
-        <button onClick={() => console.log(artists)}>Log Artists</button>
         <ArtistResults artistResults={artists} />
       </header>
     </div>
