@@ -4,14 +4,13 @@ import { searchArtists, getArtistTracks } from "./services/deezer";
 import { AUTH_URL } from "./services/authorize";
 import SearchBar from "./components/SearchBar";
 import ArtistResults from "./components/ArtistResults";
+import ArtistSearch from "./components/ArtistSearch";
 
 const App = () => {
-  const [token, setToken] = useState(null);
-
-  const [artists, setArtists] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedArtist, setSelectedArtist] = useState(null);
 
   // TODO: Add error handling if user rejects authorization
+  const [token, setToken] = useState(null);
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.hash);
     const token = urlParams.get("access_token");
@@ -23,31 +22,25 @@ const App = () => {
     }
   }, []);
 
-  function test() {
-    const res = searchArtists("The Strokes");
-    console.log("res: ", res);
-  }
-
-  function handleSearchQueryChange(event) {
-    setSearchQuery(event.target.value);
-  }
-
-  async function handleSearchSubmit(event) {
-    event.preventDefault();
-    const data = await searchArtists(searchQuery);
-    setArtists(data);
+  function handleArtistClick(artist) {
+    setSelectedArtist(artist);
   }
 
   return (
     <div className="App">
       <header className="App-header">
         <h1>Identify The Song!</h1>
-        <SearchBar
+        <ArtistSearch onArtistClick={handleArtistClick} />
+        {/* <SearchBar
           searchQuery={searchQuery}
-          handleChange={handleSearchQueryChange}
-          handleSubmit={handleSearchSubmit}
+          handleSearchQueryChange={handleSearchQueryChange}
+          handleSearchQuerySubmit={handleSearchSubmit}
         />
-        <ArtistResults artistResults={artists} />
+        <ArtistResults
+          artistResults={artists}
+          onArtistClick={handleArtistClick}
+        /> */}
+        <button onClick={() => console.log(selectedArtist)}>Log Artist</button>
       </header>
     </div>
   );
