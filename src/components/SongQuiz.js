@@ -1,9 +1,8 @@
 import React from "react";
 import { useState, useEffect, useRef } from "react";
-import ProgressBar from "./ProgressBar";
 import "./SongQuiz.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import swal from "sweetalert";
+import Swal from "sweetalert2";
 
 import {
   faPlay,
@@ -28,11 +27,8 @@ const SongQuiz = ({ artist, artistTracks, onQuizFinish, numRounds }) => {
   useEffect(() => {
     if (searchTerm !== "") {
       const filteredResults = artistTracks.filter((track) => {
-        console.log("title: ", track.title);
-        console.log("searchTerm: ", searchTerm);
         return track.title.toLowerCase().includes(searchTerm.toLowerCase());
       });
-      console.log(filteredResults);
       setSearchResults(filteredResults);
     } else {
       setSearchResults([]);
@@ -41,17 +37,19 @@ const SongQuiz = ({ artist, artistTracks, onQuizFinish, numRounds }) => {
 
   const handleTrackClick = (track) => {
     if (track.id === trackQueue[currentTrackIndex].id) {
-      swal(
-        "Correct!",
-        `The answer was ${trackQueue[currentTrackIndex].title}!`,
-        "success"
-      );
+      Swal.fire({
+        title: "Correct!",
+        text: `The answer was ${trackQueue[currentTrackIndex].title}!`,
+        icon: "success",
+        confirmButtonText: "Next Track",
+      });
     } else {
-      swal(
-        "Incorrect!",
-        `The answer was ${trackQueue[currentTrackIndex].title}!`,
-        "error"
-      );
+      Swal.fire({
+        title: "Incorrect!",
+        text: `The answer was ${trackQueue[currentTrackIndex].title}!`,
+        icon: "error",
+        confirmButtonText: "Next Track",
+      });
     }
     handleNextTrack();
   };
@@ -155,7 +153,7 @@ const SongQuiz = ({ artist, artistTracks, onQuizFinish, numRounds }) => {
       </div>
       <ul className="track-results">
         {searchResults.map((track) => (
-          <li key={track} onClick={() => handleTrackClick(track)}>
+          <li key={track.id} onClick={() => handleTrackClick(track)}>
             {track.title}
           </li>
         ))}

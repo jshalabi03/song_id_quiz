@@ -1,8 +1,6 @@
 import "./App.css";
 import { useState, useEffect } from "react";
-import { searchArtists, getArtistTracks } from "./services/deezer";
-import SearchBar from "./components/SearchBar";
-import ArtistResults from "./components/ArtistResults";
+import { getArtistTracks } from "./services/deezer";
 import ArtistSearch from "./components/ArtistSearch";
 import SongQuiz from "./components/SongQuiz";
 
@@ -21,7 +19,7 @@ const App = () => {
     } else {
       console.log("no token");
     }
-  }, []);
+  }, [token]);
 
   async function handleArtistClick(artist) {
     setSelectedArtist(artist);

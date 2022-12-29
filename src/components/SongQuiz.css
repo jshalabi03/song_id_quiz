@@ -29,7 +29,7 @@ progress::-webkit-progress-bar {
 }
 
 progress::-webkit-progress-value {
-    background-color: lightskyblue;
+    background-color: lightblue;
     border-radius: 10px;
 }
 

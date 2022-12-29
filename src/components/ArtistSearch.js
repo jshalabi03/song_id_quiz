@@ -3,6 +3,7 @@ import { useState } from "react";
 import { searchArtists } from "../services/deezer";
 import SearchBar from "./SearchBar";
 import ArtistResults from "./ArtistResults";
+import Swal from "sweetalert2";
 
 const ArtistSearch = ({ onArtistClick }) => {
   const [artistResults, setArtistResults] = useState([]);
@@ -17,9 +18,17 @@ const ArtistSearch = ({ onArtistClick }) => {
     if (searchQuery === "") return;
 
     const data = await searchArtists(searchQuery);
-    setArtistResults(data);
 
-    searchQuery = "";
+    if (!data) {
+      Swal.fire({
+        title: "Error",
+        html: 'Due to the nature of this deployment, the client must use a <a href="https://mybrowseraddon.com/access-control-allow-origin.html">CORS proxy</a> to make requests to the Deezer API',
+        icon: "warning",
+      });
+    }
+
+    setArtistResults(data);
+    setSearchQuery("");
   };
 
   return (
