@@ -8,18 +8,19 @@ const ArtistSearch = ({ onArtistClick }) => {
   const [artistResults, setArtistResults] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
-  function handleSearchQueryChange(event) {
+  const handleSearchQueryChange = (event) => {
     setSearchQuery(event.target.value);
-  }
+  };
 
-  async function handleSearchQuerySubmit(event) {
+  const handleSearchQuerySubmit = async (event) => {
     event.preventDefault();
+    if (searchQuery === "") return;
 
     const data = await searchArtists(searchQuery);
     setArtistResults(data);
 
     searchQuery = "";
-  }
+  };
 
   return (
     <div className="artist-search">

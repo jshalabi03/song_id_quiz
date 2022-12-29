@@ -1,12 +1,12 @@
 import axios from "axios";
 
-const BASE_URL = "https://api.deezer.com/search";
-const ARTIST_URL = `${BASE_URL}/artist`;
-const TRACK_URL = `${BASE_URL}/track`;
+const BASE_URL = "https://api.deezer.com/";
+const SEARCH_ARTIST_URL = `${BASE_URL}/search/artist`;
+const ARTIST_TRACKS_URL = `${BASE_URL}/artist/`;
 
 export async function searchArtists(query) {
   try {
-    const response = await axios.get(ARTIST_URL, {
+    const response = await axios.get(SEARCH_ARTIST_URL, {
       params: {
         q: query,
         limit: 15,
@@ -22,13 +22,14 @@ export async function searchArtists(query) {
 
 export async function getArtistTracks(artist) {
   try {
-    const response = await axios.get(TRACK_URL, {
+    const response = await axios.get(`${ARTIST_TRACKS_URL}${artist.id}/top`, {
       params: {
-        q: artist.name,
-        index: 10,
+        limit: 50,
       },
     });
-    return response.data;
+    const responseData = response.data;
+    const tracks = responseData.data;
+    return tracks;
   } catch (error) {
     console.log("error: ", error);
   }
