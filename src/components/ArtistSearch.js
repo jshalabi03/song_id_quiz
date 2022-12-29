@@ -28,6 +28,7 @@ const ArtistSearch = ({ onArtistClick }) => {
         searchQuery={searchQuery}
         handleSearchQueryChange={handleSearchQueryChange}
         handleSearchQuerySubmit={handleSearchQuerySubmit}
+        placeholder="Search for an artist"
       />
       <ArtistResults
         artistResults={artistResults}

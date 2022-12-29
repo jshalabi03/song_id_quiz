@@ -1,9 +1,11 @@
 import React from "react";
+import "./SearchBar.css";
 
 const SearchBar = ({
   searchQuery,
   handleSearchQueryChange,
   handleSearchQuerySubmit,
+  placeholder,
 }) => {
   return (
     <div className="search-bar">
@@ -12,6 +14,7 @@ const SearchBar = ({
           type="text"
           value={searchQuery}
           onChange={handleSearchQueryChange}
+          placeholder={placeholder}
         />
         <button type="submit">Search</button>
       </form>

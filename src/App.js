@@ -37,19 +37,15 @@ const App = () => {
     <div className="App">
       <header className="App-header">
         <h1>Identify The Song!</h1>
-        <button onClick={() => console.log(tracks)}>Log Tracks</button>
         {!selectedArtist ? (
           <ArtistSearch onArtistClick={handleArtistClick} />
         ) : (
-          <>
-            <button onClick={() => setSelectedArtist(null)}>Clear</button>
-            <SongQuiz
-              artist={selectedArtist}
-              artistTracks={tracks}
-              onQuizFinish={onQuizFinish}
-              numRounds={3}
-            />
-          </>
+          <SongQuiz
+            artist={selectedArtist}
+            artistTracks={tracks}
+            onQuizFinish={onQuizFinish}
+            numRounds={3}
+          />
         )}
       </header>
     </div>
@@ -57,13 +53,3 @@ const App = () => {
 };
 
 export default App;
-
-// const getArtist = async () => {
-//   const artists = await searchArtists("The Strokes");
-//   setArtist(artists.data[0]);
-// };
-
-// const getTracks = async () => {
-//   const tracks = await getArtistTracks(myArtist);
-//   console.log(tracks);
-// };

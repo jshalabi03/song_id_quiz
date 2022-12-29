@@ -2,76 +2,102 @@ import React from "react";
 import { useState, useEffect, useRef } from "react";
 import ProgressBar from "./ProgressBar";
 import "./SongQuiz.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import swal from "sweetalert";
+
+import {
+  faPlay,
+  faPause,
+  faArrowLeft,
+} from "@fortawesome/free-solid-svg-icons";
 
 const SongQuiz = ({ artist, artistTracks, onQuizFinish, numRounds }) => {
-  const selectTracks = () => {
+  const selectTracks = (numTracks) => {
     let arr = artistTracks.slice();
     arr.sort(() => Math.random() - 0.5);
-    return arr.slice(0, numRounds);
+    return arr.slice(0, numTracks);
   };
 
-  const [trackQueue, setTrackQueue] = useState(selectTracks());
+  const [trackQueue, setTrackQueue] = useState([]);
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [progressInterval, setProgressInterval] = useState(null);
 
-  const audioPlayerRef = useRef(null);
-
-  const updateProgress = () => {
-    if (progress >= 100) {
-      clearInterval(progressInterval);
-    } else {
-      setProgress((progress) => progress + 1);
-    }
-    console.log("progress: ", progress);
-  };
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
 
   useEffect(() => {
-    setTrackQueue(selectTracks(numRounds));
+    if (searchTerm !== "") {
+      const filteredResults = artistTracks.filter((track) => {
+        console.log("title: ", track.title);
+        console.log("searchTerm: ", searchTerm);
+        return track.title.toLowerCase().includes(searchTerm.toLowerCase());
+      });
+      console.log(filteredResults);
+      setSearchResults(filteredResults);
+    } else {
+      setSearchResults([]);
+    }
+  }, [searchTerm]);
+
+  const handleTrackClick = (track) => {
+    if (track.id === trackQueue[currentTrackIndex].id) {
+      swal(
+        "Correct!",
+        `The answer was ${trackQueue[currentTrackIndex].title}!`,
+        "success"
+      );
+    } else {
+      swal(
+        "Incorrect!",
+        `The answer was ${trackQueue[currentTrackIndex].title}!`,
+        "error"
+      );
+    }
+    handleNextTrack();
+  };
+
+  const audioPlayerRef = useRef(null);
+  const progressRef = useRef(null);
+
+  // TODO: Change to custom amount of rounds
+  useEffect(() => {
+    setTrackQueue(selectTracks(artistTracks.length));
     setCurrentTrackIndex(0);
   }, [artistTracks]);
 
   const handlePlay = () => {
-    audioPlayerRef.current.currentTime = 0;
+    if (audioPlayerRef.current.currentTime >= 5) {
+      audioPlayerRef.current.currentTime = 0;
+    }
     audioPlayerRef.current.play();
     setIsPlaying(true);
-    setProgress(0);
-    const interval = setInterval(updateProgress, 50);
-    setProgressInterval(interval);
   };
 
   const handlePause = () => {
     audioPlayerRef.current.pause();
     setIsPlaying(false);
-    clearInterval(progressInterval);
   };
 
   const handleEnd = () => {
     audioPlayerRef.current.pause();
     setIsPlaying(false);
-    clearInterval(progressInterval);
-    setProgress(0);
   };
 
   const handleTimeUpdate = () => {
-    // const progress = (audioPlayerRef.current.currentTime / 5) * 100;
-    // setProgress(progress);
+    const progress = (audioPlayerRef.current.currentTime / 5) * 100;
+    progressRef.current.value = progress;
     if (audioPlayerRef.current.currentTime >= 5) {
       audioPlayerRef.current.pause();
       setIsPlaying(false);
-      clearInterval(progressInterval);
     }
-    // console.log("progress: ", progress);
-    // console.log("interval: ", progressInterval);
   };
 
   const handleNextTrack = () => {
-    setProgress(0);
-    clearInterval(progressInterval);
+    progressRef.current.value = 0;
     if (currentTrackIndex < trackQueue.length - 1) {
       setCurrentTrackIndex(currentTrackIndex + 1);
       setIsPlaying(false);
+      setSearchTerm("");
     } else {
       onQuizFinish();
     }
@@ -80,10 +106,23 @@ const SongQuiz = ({ artist, artistTracks, onQuizFinish, numRounds }) => {
   if (trackQueue.length === 0) return <h1>...</h1>;
   return (
     <div className="song-quiz">
+      <div>
+        <FontAwesomeIcon
+          className="go-back-button"
+          icon={faArrowLeft}
+          onClick={onQuizFinish}
+        />
+      </div>
       <img src={artist.picture_medium} alt={artist.name}></img>
       <h2>{artist.name}</h2>
-      <ProgressBar progress={progress} />
-      <button onClick={() => console.log(trackQueue)}>log</button>
+      <div>
+        <progress
+          className="progress-bar"
+          ref={progressRef}
+          value={0}
+          max={100}
+        ></progress>
+      </div>
       <div>
         <audio
           ref={audioPlayerRef}
@@ -93,9 +132,34 @@ const SongQuiz = ({ artist, artistTracks, onQuizFinish, numRounds }) => {
         ></audio>
       </div>
       <div>
-        {isPlaying ? <></> : <button onClick={handlePlay}>Play</button>}
+        {isPlaying ? (
+          <button onClick={handlePause}>
+            <FontAwesomeIcon icon={faPause} />
+          </button>
+        ) : (
+          <button onClick={handlePlay}>
+            <FontAwesomeIcon icon={faPlay} />
+          </button>
+        )}
       </div>
-      <button onClick={handleNextTrack}>Next</button>
+
+      {/* <button onClick={handleNextTrack}>Next</button> */}
+
+      <div className="track-search">
+        <input
+          type="text"
+          value={searchTerm}
+          placeholder="Guess the track"
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+      <ul className="track-results">
+        {searchResults.map((track) => (
+          <li key={track} onClick={() => handleTrackClick(track)}>
+            {track.title}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
