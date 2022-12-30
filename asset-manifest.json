@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/song_id_quiz/static/css/main.7ba32daf.css",
-    "main.js": "/song_id_quiz/static/js/main.604beccc.js",
+    "main.js": "/song_id_quiz/static/js/main.a817ad6b.js",
     "index.html": "/song_id_quiz/index.html",
     "main.7ba32daf.css.map": "/song_id_quiz/static/css/main.7ba32daf.css.map",
-    "main.604beccc.js.map": "/song_id_quiz/static/js/main.604beccc.js.map"
+    "main.a817ad6b.js.map": "/song_id_quiz/static/js/main.a817ad6b.js.map"
   },
   "entrypoints": [
     "static/css/main.7ba32daf.css",
-    "static/js/main.604beccc.js"
+    "static/js/main.a817ad6b.js"
   ]
 }
