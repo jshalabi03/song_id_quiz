@@ -22,7 +22,7 @@ const ArtistSearch = ({ onArtistClick }) => {
     if (!data) {
       Swal.fire({
         title: "Error",
-        html: 'Due to the nature of this deployment, the client must use a <a href="https://mybrowseraddon.com/access-control-allow-origin.html">CORS proxy</a> to make requests to the Deezer API',
+        html: 'Due to the nature of this deployment, you must use a <a href="https://mybrowseraddon.com/access-control-allow-origin.html">CORS proxy</a> to make requests to the Deezer API',
         icon: "warning",
       });
     } else {
