@@ -1,4 +1,7 @@
 # Song Identification Game
+## [Live Demo](https://jshalabi03.github.io/song_id_quiz/)
+![](public/demo.gif)
+
 ## About
 * React web app that uses [Deezer's API](https://developers.deezer.com/api) to retrieve artist and track data. 
 * Supports track playback for use in Song ID quiz.
@@ -12,5 +15,4 @@
 1. Enter the title of the song and submit.
 1. View result and repeat.
 
-## [Live Demo](https://jshalabi03.github.io/song_id_quiz/)
-![](public/demo.gif)
+
